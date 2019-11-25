@@ -49,12 +49,6 @@ namespace WebApi_DDD_CQRS.DbContexts
         public DbSet<BookShippingDetail> BookShippingDetails { get; set; }
 
 
-
-        //public BooksDbContext(DbContextOptions<BooksDbContext> options)
-        //   : base(options)
-        //{
-        //}
-
         public BooksDbContext(IConfiguration config)
         {
             this.config = config;

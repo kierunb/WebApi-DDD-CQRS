@@ -51,7 +51,7 @@ namespace WebApi_DDD_CQRS.Controllers
         {
 
             var book = await db.Books
-                //.Include(b => b.Authors)        
+                .Include(b => b.Authors)        
                 .FirstOrDefaultAsync(b => b.BookId == id);
 
             return Ok(book);
