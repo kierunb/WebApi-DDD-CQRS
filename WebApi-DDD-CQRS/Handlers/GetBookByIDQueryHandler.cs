@@ -60,8 +60,9 @@ namespace WebApi_DDD_CQRS.Handlers
             //    .FirstOrDefaultAsync(b => b.BookId == request.BookId);
 
             var response = await db.Books
-                .ProjectTo<GetBookByIDResponseModel>(this.configuration)
+                .ProjectTo<GetBookByIDResponseModel>(this.configuration) // z automappera
                 .FirstOrDefaultAsync(b => b.BookId == request.BookId);
+
             return response;
         }
     }

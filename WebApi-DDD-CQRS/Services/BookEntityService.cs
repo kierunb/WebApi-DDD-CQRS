@@ -21,9 +21,6 @@ namespace WebApi_DDD_CQRS.Services
             // save
         }
 
-        public BookResponseModel GetBookList()
-        {
-            return null;
-        }
+ 
     }
 }
