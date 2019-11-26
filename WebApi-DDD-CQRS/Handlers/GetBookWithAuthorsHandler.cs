@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebApi_DDD_CQRS.DbContexts;
 using WebApi_DDD_CQRS.Services;
 
@@ -48,10 +50,26 @@ namespace WebApi_DDD_CQRS.Handlers
             this.config = config;
         }
 
-        public Task<BookResponseModel> Handle(GetBookWithAuthorsRequest request, 
+        public async Task<BookResponseModel> Handle(GetBookWithAuthorsRequest request,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await db.Books
+                                    .Include(b => b.Authors)
+                                    .Where(b => b.BookId == request.BookId)
+                                    .ProjectTo<BookResponseModel>(this.config)
+                                    .FirstOrDefaultAsync();
+            return response;
+        }
+    }
+
+    public class BooksMaps : Profile
+    {
+        public BooksMaps()
+        {
+            CreateMap<Book, BookResponseModel>().ReverseMap();
+            CreateMap<Author, AuthorResponseModel>().ReverseMap();
         }
     }
 }
+
+
