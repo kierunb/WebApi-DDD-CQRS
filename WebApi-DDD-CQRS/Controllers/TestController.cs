@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebApi_DDD_CQRS.DbContexts;
+using WebApi_DDD_CQRS.Handlers;
 using WebApi_DDD_CQRS.Repositories;
 
 namespace WebApi_DDD_CQRS.Controllers
@@ -12,16 +14,18 @@ namespace WebApi_DDD_CQRS.Controllers
     public class TestController : ControllerBase
     {
 
-
         private readonly ILogger<TestController> logger;
         private readonly BooksDbContext db;
+        private readonly IMediator mediator;
 
         public TestController(
             ILogger<TestController> logger,
-            BooksDbContext db)
+            BooksDbContext db,
+            IMediator mediator)
         {
             this.logger = logger;
             this.db = db;
+            this.mediator = mediator;
         }
 
         [HttpGet]
@@ -112,12 +116,10 @@ namespace WebApi_DDD_CQRS.Controllers
         [Route("get-book/{id}")]
         public async Task<ActionResult> GetBookAsync(int id)
         {
+            var request = new GetBookByIDRequest { BookId = id };
+            var response = await this.mediator.Send(request);
 
-            var book = await db.Books
-                //.Include(b => b.Authors)        
-                .FirstOrDefaultAsync(b => b.BookId == id);
-
-            return Ok(book);
+            return Ok(response);
         }
 
     }
