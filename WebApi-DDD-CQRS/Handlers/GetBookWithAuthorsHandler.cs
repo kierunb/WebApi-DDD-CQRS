@@ -29,12 +29,10 @@ namespace WebApi_DDD_CQRS.Handlers
 
     }
 
-
     public class GetBookWithAuthorsRequest : IRequest<BookResponseModel>
     {
         public int BookId { get; set; }
     }
-
 
     public class GetBookWithAuthorsHandler
         : IRequestHandler<GetBookWithAuthorsRequest, BookResponseModel>
